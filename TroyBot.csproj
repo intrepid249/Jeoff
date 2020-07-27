@@ -6,13 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Core\Assets\**" />
+    <EmbeddedResource Remove="Core\Assets\**" />
+    <None Remove="Core\Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00709" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00709" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00709" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy config.json $(OutDir)" />
+    <Exec Command="xcopy /y config.json $(OutDir)&#xD;&#xA;xcopy /y /i Assets $(OutDir)Assets" />
   </Target>
 
 </Project>

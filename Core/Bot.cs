@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using TroyBot.Core.Commands;
 
 namespace TroyBot.Core
 {
@@ -32,7 +33,7 @@ namespace TroyBot.Core
                 TokenType = TokenType.Bot,
                 AutoReconnect = true,
                 LogLevel = LogLevel.Debug,
-                UseInternalLogHandler = true
+                UseInternalLogHandler = true,
             };
 
             Client = new DiscordClient(config);
@@ -51,12 +52,16 @@ namespace TroyBot.Core
                 CaseSensitive = false,
                 EnableDms = false,
                 EnableDefaultHelp = true,
-                EnableMentionPrefix = true
+                EnableMentionPrefix = true,
+                StringPrefixes = new string[] { configJson.Prefix }
             };
 
             Commands = Client.UseCommandsNext(commandsConfig);
             // Register Commands classes
+            Commands.RegisterCommands<AdminModule>();
 
+            await Client.ConnectAsync();
+            await Task.Delay(-1);
         }
 
         public async Task OnClientReady(ReadyEventArgs args)
